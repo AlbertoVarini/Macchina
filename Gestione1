@@ -1,0 +1,92 @@
+package controller;
+import business.MacchinaCaffe;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+/**
+ * Servlet implementation class Gestione
+ */
+
+public class Gestione extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	
+     MacchinaCaffe m1=new MacchinaCaffe(3,5,7,2);
+   
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doPost(request,response);
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		HttpSession session = request.getSession();
+		
+		request.setAttribute("Esaurimento","");
+		
+		request.setAttribute("contaCaffe",m1.getCaffe());
+		request.setAttribute("contaThe",m1.getThe());
+		request.setAttribute("contaCioccolata",m1.getCioccolata());
+		request.setAttribute("contaCappuccino",m1.getCappuccino());
+		
+		if(request.getParameter("bevanda")!=null) {
+	
+			if(request.getParameter("bevanda").equals("Caffe")){
+				if(m1.getCaffe()>0){
+					m1.setCaffe(m1.getCaffe()-1);
+					request.setAttribute("contaCaffe",m1.getCaffe());
+				}else{
+					request.setAttribute("Esaurimento","Caffe esaurito");
+				}
+			}
+			if(request.getParameter("bevanda").equals("The"))
+			{
+				if(m1.getThe()>0){
+					m1.setThe(m1.getThe()-1);
+					request.setAttribute("contaThe",m1.getThe());
+			}else {
+					request.setAttribute("Esaurimento","The esaurito");
+			}
+			}
+			if(request.getParameter("bevanda").equals("Cioccolata"))
+			{	
+				if(m1.getCioccolata()>0){
+					m1.setCioccolata(m1.getCioccolata()-1);
+					request.setAttribute("contaCioccolata",m1.getCioccolata());
+				}else {
+					request.setAttribute("Esaurimento","Cioccolata esaurita");
+				}
+				
+			}
+				if(request.getParameter("bevanda").equals("Cappuccino"))
+				{	
+					if(m1.getCappuccino()>0){
+						m1.setCappuccino(m1.getCappuccino()-1);
+						request.setAttribute("contaCappuccino",m1.getCappuccino());
+					}else {
+						request.setAttribute("Esaurimento","Cappuccino esaurito");
+					}
+				}
+		}
+		
+		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/macchinetta.jsp");
+		dispatcher.forward(request, response);
+		
+	}
+}
+
+	
+		
+	
+		
+	
